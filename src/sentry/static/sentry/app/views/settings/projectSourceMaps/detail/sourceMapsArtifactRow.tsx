@@ -13,7 +13,7 @@ import Confirm from 'app/components/confirm';
 import Access from 'app/components/acl/access';
 import Role from 'app/components/acl/role';
 import Tooltip from 'app/components/tooltip';
-import Tag from 'app/components/tagDeprecated';
+import Tag from 'app/components/tag';
 
 type Props = {
   artifact: Artifact;
@@ -43,7 +43,7 @@ const SourceMapsArtifactRow = ({
             <IconClock size="xs" />
             <TimeSince date={dateCreated} />
           </TimeWrapper>
-          {dist && <Tag inline>{dist}</Tag>}
+          {dist && <StyledTag>{dist}</StyledTag>}
         </TimeAndDistWrapper>
       </NameColumn>
       <SizeColumn>
@@ -95,6 +95,10 @@ const SourceMapsArtifactRow = ({
     </React.Fragment>
   );
 };
+
+const StyledTag = styled(Tag)`
+  margin-left: ${space(0.75)};
+`;
 
 const NameColumn = styled('div')`
   display: flex;
