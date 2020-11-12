@@ -29,7 +29,7 @@ export default class AdminQueue extends AsyncView<{}, State> {
     };
   }
 
-getEndpoints(): ReturnType<AsyncView['getEndpoints']> {
+  getEndpoints(): ReturnType<AsyncView['getEndpoints']> {
     return [['taskList', '/internal/queue/tasks/']];
   }
 
