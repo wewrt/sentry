@@ -40,7 +40,7 @@ export default class AdminQuotas extends AsyncView<{}, State> {
           </div>
 
           <div className="box-content with-padding">
-            <TextField name="backend" value={config.backend} label="Backend" disabled />
+            <TextField name="backend" value={config.backend} label={t('Backend')} disabled />
             <TextField
               name="rateLimit"
               value={config.options['system.rate-limit']}
