@@ -8,6 +8,7 @@ from sentry.rules.actions.base import TicketEventAction
 from sentry.models import GroupLink
 from sentry.utils import json
 from sentry.utils.http import absolute_uri
+from sentry.web.decorators import transaction_start
 
 logger = logging.getLogger("sentry.rules")
 
@@ -42,6 +43,7 @@ class JiraCreateTicketAction(TicketEventAction):
             self.rule.label, absolute_uri(rule_url),
         )
 
+    @transaction_start("JiraCreateTicketAction.after")
     def after(self, event, state):
         organization = self.project.organization
         integration = self.get_integration()
