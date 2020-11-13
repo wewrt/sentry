@@ -5,7 +5,8 @@ import logging
 from django import forms
 
 from sentry.rules.actions.base import TicketEventAction
-from sentry.models import ExternalIssue
+from sentry.models import GroupLink
+from sentry.utils import json
 from sentry.utils.http import absolute_uri
 
 logger = logging.getLogger("sentry.rules")
@@ -52,15 +53,16 @@ class JiraCreateTicketAction(TicketEventAction):
         def create_issue(event, futures):
             """Create the Jira ticket for a given event"""
 
-            # TODO check if a Jira ticket already exists for the given event's issue. if it does, skip creating it
-            resp = installation.create_issue(self.data)
-            ExternalIssue.objects.create(
-                organization_id=organization.id,
-                integration_id=integration.id,
-                key=resp["key"],
-                title=event.title,
-                description=installation.get_group_description(event.group, event),
-            )
+            linked = GroupLink.objects.filter(
+                project_id=self.project.id,
+                group_id=event.group.id,
+                linked_type=GroupLink.LinkedType.issue,
+            ).values_list("data", flat=True)
+
+            if not linked or json.loads(linked[0])["provider"] != self.provider:
+                # if multiple tickets are being created via one rule or same criteria
+                resp = installation.create_issue(self.data)
+                self.create_link(resp["key"], integration, installation, event)
             return
 
         key = u"jira:{}".format(integration.id)
