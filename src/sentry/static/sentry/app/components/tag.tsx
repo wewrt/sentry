@@ -125,10 +125,12 @@ const Background = styled('div')<{type: keyof Theme['tag']}>`
 
 const IconWrapper = styled('span')`
   margin-right: 3px;
+  display: flex;
+  align-items: center;
 `;
 
 const Text = styled('span')`
-  color: ${p => p.theme.textColor};
+  color: ${p => p.theme.subText};
   font-size: 13px;
   max-width: 150px;
   overflow: hidden;
@@ -136,7 +138,7 @@ const Text = styled('span')`
   text-overflow: ellipsis;
   line-height: ${TAG_HEIGHT};
   a:hover & {
-    color: ${p => p.theme.textColor};
+    color: ${p => p.theme.subText};
   }
 `;
 
